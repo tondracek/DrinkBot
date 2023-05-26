@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "555658721451",
+    "project_id": "drinkbot-8ab76",
+    "storage_bucket": "drinkbot-8ab76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555658721451:android:0edda8b889252a1241dfee",
+        "android_client_info": {
+          "package_name": "com.thomasthedeveloper.drinkbot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555658721451-8pkvvor8fuo6njmegkkhj4bom1sa4der.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVBE6KwxJmWTnafLTZtnfYmL_O7qU6lOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555658721451-8pkvvor8fuo6njmegkkhj4bom1sa4der.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
