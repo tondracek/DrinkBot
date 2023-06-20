@@ -1,33 +1,40 @@
 package com.thomasthedeveloper.drinkbot;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import java.util.Date;
+import com.thomasthedeveloper.drinkbot.amount_adding.AmountAdding;
+import com.thomasthedeveloper.drinkbot.counter.Counter;
+import com.thomasthedeveloper.drinkbot.counter.CounterModel;
+import com.thomasthedeveloper.drinkbot.drinking_history.DrinkingHistory;
+import com.thomasthedeveloper.drinkbot.drinking_history.drinking_history_unit.DrinkingHistoryUnitModel;
 
 public class MainActivity extends AppCompatActivity {
-    TotalCounter totalCounter;
-    int total, goal;
+    private Counter counter;
+    private DrinkingHistory drinkingHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        totalCounter = new TotalCounter(this);
-        AmountAdder amountAdder = new AmountAdder(this, totalCounter);
+        counter = new Counter(findViewById(R.id.counterView));
+        drinkingHistory = new DrinkingHistory(findViewById(R.id.drinkingHistoryView));
+
+        AmountAdding amountAdding = new AmountAdding(findViewById(R.id.amountAddingView), counter);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // CLOSING KEYBOARD AFTER FOCUS LOST
         View main = findViewById(R.id.mainLayout);
         main.setOnClickListener(view -> {
             InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            kill_focus(amountAdder.amountEdit, manager);
+            amountAdding.killFocus(manager);
         });
     }
 
@@ -35,62 +42,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        SharedPreferences preferences = getSharedPreferences("DrinkBot", Context.MODE_PRIVATE);
-        if (compareStrings(getDate(), preferences.getString("time", ""))) {
-            total = 0;
-        } else {
-            total = preferences.getInt("total", 0);
-        }
-        goal = preferences.getInt("goal", 2000);
+        CounterModel outdatedModel = counter.loadFromMemory(getApplicationContext());
+        drinkingHistory.loadFromMemory(getApplicationContext());
 
-        totalCounter.setTotal(total);
-        totalCounter.setGoal(goal);
+        if (outdatedModel != null) {
+            drinkingHistory.add(DrinkingHistoryUnitModel.convert(outdatedModel));
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        SharedPreferences preferences = getSharedPreferences("DrinkBot", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+        counter.saveToMemory(getApplicationContext());
 
-        editor.putInt("goal", totalCounter.getGoal());
-        editor.putInt("total", totalCounter.getTotal());
-        editor.putString("time", getDate());
-        editor.apply();
-    }
-
-    void kill_focus(View focused_view, InputMethodManager manager) {
-        manager.hideSoftInputFromWindow(focused_view.getWindowToken(), 0);
-        focused_view.clearFocus();
-    }
-
-    String getDate() {
-        Date date = new Date();
-
-        return (String) DateFormat.format("yyyy-MM-dd", date);
-    }
-
-    Boolean compareStrings(String str1, String str2) {
-        /**
-         * Returns true if the first string is bigger.
-         * Returns false if the second is bigger or they are equal.
-         **/
-
-        int size = Math.min(str1.length(), str2.length());
-
-        for (int i = 0; i < size; i++) {
-            int char1 = str1.charAt(i);
-            int char2 = str2.charAt(i);
-
-            if (char1 > char2) {
-                return true;
-            }
-            if (char1 < char2) {
-                return false;
-            }
-        }
-
-        return str1.length() > str2.length();
+        drinkingHistory.saveToMemory(getApplicationContext());
     }
 }
