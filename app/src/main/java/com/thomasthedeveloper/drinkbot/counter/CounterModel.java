@@ -35,7 +35,7 @@ public class CounterModel implements Serializable, MVPModel {
     public boolean isActual() {
         LocalDate actualDate = LocalDate.now();
 
-        return date.compareTo(actualDate) >= 0;
+        return date.compareTo(actualDate) == 0;
     }
 
     public void setGoal(int new_goal) {

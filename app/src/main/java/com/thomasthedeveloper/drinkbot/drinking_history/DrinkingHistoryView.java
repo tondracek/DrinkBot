@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.material.navigation.NavigationView;
 import com.thomasthedeveloper.drinkbot.MVPModel;
 import com.thomasthedeveloper.drinkbot.MVPView;
 import com.thomasthedeveloper.drinkbot.R;

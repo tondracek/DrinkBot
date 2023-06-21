@@ -67,19 +67,7 @@ public class Counter {
      * @return outdated {@link CounterModel} or null if it is not outdated
      */
     public CounterModel loadFromMemory(Context context) {
-        CounterModel loadedModel = loadModelFromFile(context);
-
-        if (loadedModel == null || !loadedModel.isActual()) {
-            return loadedModel;
-        }
-
-        counterModel = loadedModel;
-        counterView.updateUI(counterModel);
-        return null;
-    }
-
-    private CounterModel loadModelFromFile(Context context) {
-        CounterModel loadedModel = null;
+        CounterModel loadedModel;
         File saveFile = new File(context.getFilesDir(), "save.bin");
         try {
             FileInputStream fileInputStream = new FileInputStream(saveFile);
@@ -91,9 +79,17 @@ public class Counter {
             fileInputStream.close();
         } catch (Exception e) {
             Toast.makeText(context.getApplicationContext(), "No backup found", Toast.LENGTH_SHORT).show();
+            counterView.updateUI(counterModel);
+            return null;
         }
 
-        return loadedModel;
+        if (loadedModel == null || !loadedModel.isActual()) {
+            return loadedModel;
+        }
+
+        counterModel = loadedModel;
+        counterView.updateUI(counterModel);
+        return null;
     }
 
     public void saveToMemory(Context context) {

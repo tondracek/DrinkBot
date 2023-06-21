@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.thomasthedeveloper.drinkbot.drinking_history.drinking_history_unit.DrinkingHistoryUnitModel;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -24,9 +25,14 @@ public class DrinkingHistory {
         historyView.updateUI(historyModel);
     }
 
+    public DrinkingHistoryView getView() {
+        return historyView;
+    }
+
     public void loadFromMemory(Context context) {
+        File saveFile = new File(context.getFilesDir(), "history.bin");
         try {
-            FileInputStream fileInputStream = context.openFileInput("history.bin");
+            FileInputStream fileInputStream = new FileInputStream(saveFile);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
 
             historyModel = (DrinkingHistoryModel) objectInputStream.readObject();
@@ -40,8 +46,9 @@ public class DrinkingHistory {
     }
 
     public void saveToMemory(Context context) {
+        File saveFile = new File(context.getFilesDir(), "history.bin");
         try {
-            FileOutputStream fileOutputStream = context.openFileOutput("history.bin", Context.MODE_PRIVATE);
+            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             objectOutputStream.writeObject(historyModel);
