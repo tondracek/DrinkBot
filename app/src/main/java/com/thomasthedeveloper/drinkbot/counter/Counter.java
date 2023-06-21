@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.thomasthedeveloper.drinkbot.MVPModel;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -41,9 +43,13 @@ public class Counter {
         });
     }
 
+    public void updateUI() {
+        counterView.updateUI(counterModel);
+    }
+
     public void addToTotal(int addAmount) {
         counterModel.addToTotal(addAmount);
-        counterView.updateUI(counterModel);
+        updateUI();
     }
 
     private void goalSetPopUp(View view) {
@@ -57,6 +63,7 @@ public class Counter {
         builder.setPositiveButton("Set", (dialogInterface, i) -> {
             int newGoal = Integer.parseInt(String.valueOf(input.getText()));
             counterModel.setGoal(newGoal);
+            updateUI();
         });
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
         builder.show();
@@ -88,7 +95,7 @@ public class Counter {
         }
 
         counterModel = loadedModel;
-        counterView.updateUI(counterModel);
+        updateUI();
         return null;
     }
 
