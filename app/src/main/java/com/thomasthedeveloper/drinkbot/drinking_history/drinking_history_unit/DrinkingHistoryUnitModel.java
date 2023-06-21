@@ -34,6 +34,8 @@ public class DrinkingHistoryUnitModel implements MVPModel, Comparable<DrinkingHi
     }
 
     public static DrinkingHistoryUnitModel convert(CounterModel counterModel) {
+        if (counterModel == null)
+            return null;
         return new DrinkingHistoryUnitModel(counterModel.getTotal(), counterModel.getGoal(), counterModel.getDate());
     }
 }

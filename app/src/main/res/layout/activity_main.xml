@@ -53,6 +53,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/tipTextView"
+        android:layout_width="0dp"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Tip: Click the 'goal' section to set a new goal"
+        app:layout_constraintEnd_toEndOf="@+id/counterView"
+        app:layout_constraintStart_toStartOf="@+id/counterView"
+        app:layout_constraintTop_toBottomOf="@+id/counterView" />
+
     <com.thomasthedeveloper.drinkbot.amount_adding.AmountAddingView
         android:id="@+id/amountAddingView"
         android:layout_width="wrap_content"

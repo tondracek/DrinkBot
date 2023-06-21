@@ -12,12 +12,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class DrinkingHistory {
-    private DrinkingHistoryModel historyModel;
+    private final DrinkingHistoryModel historyModel;
     private final DrinkingHistoryView historyView;
 
-    public DrinkingHistory(DrinkingHistoryView historyView) {
+    public DrinkingHistory(DrinkingHistoryView historyView, Context context) {
         this.historyView = historyView;
-        historyModel = new DrinkingHistoryModel();
+        historyModel = DrinkingHistoryModel.loadFromMemory(context);
     }
 
     public void add(DrinkingHistoryUnitModel unit) {
@@ -29,34 +29,7 @@ public class DrinkingHistory {
         return historyView;
     }
 
-    public void loadFromMemory(Context context) {
-        File saveFile = new File(context.getFilesDir(), "history.bin");
-        try {
-            FileInputStream fileInputStream = new FileInputStream(saveFile);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-
-            historyModel = (DrinkingHistoryModel) objectInputStream.readObject();
-
-            objectInputStream.close();
-            fileInputStream.close();
-        } catch (Exception e) {
-            Toast.makeText(context, "Couldn't load the history", Toast.LENGTH_SHORT).show();
-        }
-        historyView.updateUI(historyModel);
-    }
-
     public void saveToMemory(Context context) {
-        File saveFile = new File(context.getFilesDir(), "history.bin");
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            objectOutputStream.writeObject(historyModel);
-
-            objectOutputStream.close();
-            fileOutputStream.close();
-        } catch (Exception e) {
-            Toast.makeText(context, "Couldn't save the history", Toast.LENGTH_SHORT).show();
-        }
+        historyModel.saveToMemory(context);
     }
 }

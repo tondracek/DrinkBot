@@ -34,9 +34,6 @@ public class DrinkingHistoryView extends LinearLayout implements MVPView {
     @Override
     public void init(Context context) {
         inflate(context, R.layout.drinking_history_layout, this);
-
-        TextView tipTextView = findViewById(R.id.tipTextView);
-        tipTextView.setSelected(true);
     }
 
     @Override
