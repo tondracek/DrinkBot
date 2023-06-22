@@ -17,6 +17,7 @@
         android:background="@drawable/baseline_arrow_back_24"
         android:clickable="true"
         android:contentDescription="return once button"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
@@ -29,6 +30,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/baseline_delete_outline_24"
         android:contentDescription="delete total button"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TouchTargetSizeCheck" />
@@ -57,12 +59,12 @@
     <TextView
         android:id="@+id/tipTextView"
         android:layout_width="0dp"
-        android:visibility="gone"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="Tip: Click the 'goal' section to set a new goal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/counterView"
         app:layout_constraintStart_toStartOf="@+id/counterView"
         app:layout_constraintTop_toBottomOf="@+id/counterView" />

@@ -7,10 +7,9 @@
     tools:context=".DrinkingHistoryActivity">
 
     <com.thomasthedeveloper.drinkbot.drinking_history.DrinkingHistoryView
+        android:id="@+id/drinkingHistoryView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

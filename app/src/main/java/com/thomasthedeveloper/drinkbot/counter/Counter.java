@@ -6,31 +6,22 @@ import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-
-import com.thomasthedeveloper.drinkbot.MVPModel;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 /**
  * This class handles communication between counterModel and counterView
  * and loads data saved in memory
  */
 public class Counter {
-    private CounterModel counterModel;
     private final CounterView counterView;
+    private CounterModel counterModel;
 
     @SuppressLint("ClickableViewAccessibility")
-    public Counter(CounterView counterView) {
+    public Counter(CounterView counterView, Context context) {
         this.counterView = counterView;
-        counterModel = new CounterModel();
+        counterModel = CounterModel.loadFromMemory(context);
+
         counterView.updateUI(counterModel);
 
         counterView.setOnTouchListener((view, motionEvent) -> {
@@ -52,6 +43,19 @@ public class Counter {
         updateUI();
     }
 
+    public void removeLastAdd() {
+        counterModel.removeLastAdd();
+        updateUI();
+    }
+
+    public void deleteTotal() {
+        addToTotal(-counterModel.getTotal());
+    }
+
+    public int getTotal() {
+        return counterModel.getTotal();
+    }
+
     private void goalSetPopUp(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Choose a new goal");
@@ -70,47 +74,24 @@ public class Counter {
     }
 
     /**
-     * @param context of application
      * @return outdated {@link CounterModel} or null if it is not outdated
      */
-    public CounterModel loadFromMemory(Context context) {
-        CounterModel loadedModel;
-        File saveFile = new File(context.getFilesDir(), "save.bin");
-        try {
-            FileInputStream fileInputStream = new FileInputStream(saveFile);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+    public CounterModel updateOutdatedModel() {
+        if (!counterModel.isActual()) {
+            CounterModel old = counterModel;
 
-            loadedModel = (CounterModel) objectInputStream.readObject();
+            counterModel = new CounterModel();
+            counterModel.setGoal(old.getGoal());
 
-            objectInputStream.close();
-            fileInputStream.close();
-        } catch (Exception e) {
-            Toast.makeText(context.getApplicationContext(), "No backup found", Toast.LENGTH_SHORT).show();
-            counterView.updateUI(counterModel);
-            return null;
+            updateUI();
+            return old;
         }
 
-        if (loadedModel == null || !loadedModel.isActual()) {
-            return loadedModel;
-        }
-
-        counterModel = loadedModel;
         updateUI();
         return null;
     }
 
     public void saveToMemory(Context context) {
-        File saveFile = new File(context.getFilesDir(), "save.bin");
-        try {
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-
-            objectOutputStream.writeObject(counterModel);
-
-            objectOutputStream.close();
-            fileOutputStream.close();
-        } catch (IOException e) {
-            Toast.makeText(context, "Unable to save backup", Toast.LENGTH_SHORT).show();
-        }
+        counterModel.saveToMemory(context);
     }
 }

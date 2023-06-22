@@ -18,10 +18,7 @@ public class DrinkingHistory {
     public DrinkingHistory(DrinkingHistoryView historyView, Context context) {
         this.historyView = historyView;
         historyModel = DrinkingHistoryModel.loadFromMemory(context);
-    }
 
-    public void add(DrinkingHistoryUnitModel unit) {
-        historyModel.add(unit);
         historyView.updateUI(historyModel);
     }
 
@@ -31,5 +28,9 @@ public class DrinkingHistory {
 
     public void saveToMemory(Context context) {
         historyModel.saveToMemory(context);
+    }
+
+    public int getSize() {
+        return historyModel.getHistory().size();
     }
 }
