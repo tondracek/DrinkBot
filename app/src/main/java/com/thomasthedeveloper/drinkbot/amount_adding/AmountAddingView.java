@@ -10,9 +10,9 @@ import android.widget.SeekBar;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.thomasthedeveloper.drinkbot.R;
 import com.thomasthedeveloper.drinkbot.MVPModel;
 import com.thomasthedeveloper.drinkbot.MVPView;
+import com.thomasthedeveloper.drinkbot.R;
 
 public class AmountAddingView extends ConstraintLayout implements MVPView {
     private EditText amountEdit;

@@ -1,9 +1,6 @@
 package com.thomasthedeveloper.drinkbot.drinking_history.drinking_history_unit;
 
-import com.thomasthedeveloper.drinkbot.counter.Counter;
-
 import java.io.Serializable;
-import java.time.LocalDate;
 
 public class DrinkingHistoryUnit implements Serializable, Comparable<DrinkingHistoryUnit> {
     private final DrinkingHistoryUnitModel unitModel;

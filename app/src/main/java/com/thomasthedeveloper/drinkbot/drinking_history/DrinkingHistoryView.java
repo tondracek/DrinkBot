@@ -3,7 +3,6 @@ package com.thomasthedeveloper.drinkbot.drinking_history;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;

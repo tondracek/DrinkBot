@@ -1,8 +1,8 @@
 package com.thomasthedeveloper.drinkbot;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.thomasthedeveloper.drinkbot.drinking_history.DrinkingHistory;
 
