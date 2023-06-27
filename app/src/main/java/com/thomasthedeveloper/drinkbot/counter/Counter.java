@@ -5,15 +5,18 @@ import android.content.Context;
 import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
+
+import com.thomasthedeveloper.drinkbot.MVPPresenter;
 
 /**
  * This class handles communication between counterModel and counterView
  * and loads data saved in memory
  */
-public class Counter {
+public class Counter implements MVPPresenter {
     private final CounterView counterView;
     private CounterModel counterModel;
 
@@ -36,6 +39,11 @@ public class Counter {
 
     public void updateUI() {
         counterView.updateUI(counterModel);
+    }
+
+    @Override
+    public ViewGroup getView() {
+        return null;
     }
 
     public void addToTotal(int addAmount) {

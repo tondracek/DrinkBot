@@ -2,7 +2,9 @@ package com.thomasthedeveloper.drinkbot.drinking_history;
 
 import android.content.Context;
 
-public class DrinkingHistory {
+import com.thomasthedeveloper.drinkbot.MVPPresenter;
+
+public class DrinkingHistory implements MVPPresenter {
     private final DrinkingHistoryModel historyModel;
     private final DrinkingHistoryView historyView;
 
@@ -10,6 +12,11 @@ public class DrinkingHistory {
         this.historyView = historyView;
         historyModel = DrinkingHistoryModel.loadFromMemory(context);
 
+        updateUI();
+    }
+
+    @Override
+    public void updateUI() {
         historyView.updateUI(historyModel);
     }
 

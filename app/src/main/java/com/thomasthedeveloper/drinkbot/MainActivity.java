@@ -2,10 +2,11 @@ package com.thomasthedeveloper.drinkbot;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         drinkingHistoryModel = DrinkingHistoryModel.loadFromMemory(context);
         counter = new Counter(findViewById(R.id.counterView), context);
-        new AmountAdding(findViewById(R.id.amountAddingView), counter, this);
 
         CounterModel outdatedModel = counter.updateOutdatedModel();
 
@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
             }).start();
         }
 
+        new AmountAdding(findViewById(R.id.amountAddingView), counter, this);
+
         TextView tipTextView = findViewById(R.id.tipTextView);
-        tipTextView.setVisibility(View.VISIBLE);
         tipTextView.setSelected(true);
 
         ImageButton backButton = findViewById(R.id.back_button);
@@ -49,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton deleteButton = findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(view -> counter.deleteTotal());
+
+
+        /*
+
+            TODO: Udělat animaci na add amount tlačítka
+
+         */
     }
 
     @Override
@@ -70,9 +78,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        int scroll = preferences.getInt("scrollTo", 0);
+
+        HorizontalScrollView scrollView = findViewById(R.id.scrollAddingView);
+        scrollView.post(() -> scrollView.setScrollX(scroll));
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
 
         counter.saveToMemory(this);
+
+        HorizontalScrollView scrollView = findViewById(R.id.scrollAddingView);
+        int scroll = scrollView.getScrollX();
+
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        preferences.edit().putInt("scrollTo", scroll).apply();
     }
 }

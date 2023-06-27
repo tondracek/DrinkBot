@@ -1,33 +1,31 @@
 package com.thomasthedeveloper.drinkbot.amount_adding;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
+import android.content.Context;
+import android.view.ViewGroup;
 
-import android.view.inputmethod.InputMethodManager;
-
-import com.thomasthedeveloper.drinkbot.MainActivity;
-import com.thomasthedeveloper.drinkbot.R;
+import com.thomasthedeveloper.drinkbot.MVPPresenter;
 import com.thomasthedeveloper.drinkbot.counter.Counter;
 
-public class AmountAdding {
-    private final AmountAddingView view;
+public class AmountAdding implements MVPPresenter {
+    private final AmountAddingView addingView;
+    private final AmountAddingModel addingModel;
 
-    public AmountAdding(AmountAddingView amountAddingView, Counter counter, MainActivity mainActivity) {
-        this.view = amountAddingView;
+    public AmountAdding(AmountAddingView amountAddingView, Counter counter, Context context) {
+        this.addingView = amountAddingView;
 
-        amountAddingView.getAddButton().setOnClickListener(view -> {
-            int amount = amountAddingView.getAmount();
-            counter.addToTotal(amount);
-        });
+        int[] range = new int[]{50, 100, 150, 200, 250, 300, 350, 400, 450, 500};
+        addingModel = new AmountAddingModel(context, range, counter);
 
-        // CLOSING KEYBOARD AFTER FOCUS LOST
-        mainActivity.findViewById(R.id.mainLayout).setOnClickListener(view -> {
-            InputMethodManager manager = (InputMethodManager) mainActivity.getApplicationContext()
-                    .getSystemService(INPUT_METHOD_SERVICE);
-            killFocus(manager);
-        });
+        updateUI();
     }
 
-    public void killFocus(InputMethodManager manager) {
-        view.killFocus(manager);
+    @Override
+    public void updateUI() {
+        addingView.updateUI(addingModel);
+    }
+
+    @Override
+    public ViewGroup getView() {
+        return addingView;
     }
 }

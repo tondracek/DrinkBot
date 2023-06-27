@@ -5,6 +5,7 @@
     <item
         android:id="@+id/historyButton"
         android:icon="@drawable/baseline_history_24"
+        android:iconTint="@color/text_color"
         android:title="History"
         app:showAsAction="ifRoom" />
 </menu>
